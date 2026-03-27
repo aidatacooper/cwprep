@@ -1,7 +1,16 @@
 # Project Changelog
 
 ### Current Status
-SDK v0.5.4 - Archive-only default output for SDK/MCP, stricter flow validation, and safer overwrite handling.
+SDK v0.5.5 - Added copyright headers and author metadata across all source files.
+
+---
+
+## v0.5.5 (2026-03-27)
+
+### Changed
+- **Copyright**: Added `Copyright (C) 2025 Cooper Wenhua <imgwho@gmail.com>` headers to all source files with SPDX-License-Identifier.
+- **Metadata**: Updated `__author__`, added `__email__`, `__copyright__`, `__license__` to `__init__.py`; updated `pyproject.toml` author entry with email.
+- **LICENSE**: Filled in the AGPL-3.0 program notice section with project name and author.
 
 ---
 

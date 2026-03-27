@@ -1,3 +1,5 @@
+# Copyright (C) 2025 Cooper Wenhua <imgwho@gmail.com>
+# SPDX-License-Identifier: AGPL-3.0
 """
 cwprep - Tableau Prep Flow SDK
 
@@ -27,8 +29,11 @@ from .config import (
     DEFAULT_CONFIG
 )
 
-__version__ = "0.5.4"
-__author__ = "cooper wenhua"
+__version__ = "0.5.5"
+__author__ = "Cooper Wenhua"
+__email__ = "imgwho@gmail.com"
+__copyright__ = "Copyright (C) 2025 Cooper Wenhua <imgwho@gmail.com>"
+__license__ = "AGPL-3.0"
 __all__ = [
     "TFLBuilder", 
     "TFLPackager", 
