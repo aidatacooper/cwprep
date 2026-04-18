@@ -4,6 +4,8 @@
 
 By reverse-engineering the `.tfl` JSON structure and providing a built-in MCP (Model Context Protocol) server, cwprep acts as a bridge between LLMs (like Claude, Gemini) and Tableau Prep. You can now generate, modify, and build data cleaning flows simply through natural language conversations or Python scripts, without ever opening the GUI!
 
+**Author:** Cooper Wenhua &lt;imgwho@gmail.com&gt;
+
 
 ## Installation
 
