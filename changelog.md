@@ -1,7 +1,16 @@
 # Project Changelog
 
 ### Current Status
-SDK v0.5.5 - Added copyright headers and author metadata across all source files.
+SDK v0.5.6 - MCP dependencies are now installed by default via `pip install cwprep`.
+
+---
+
+## v0.5.6 (2026-05-04)
+
+### Changed
+- **Default Install**: Moved MCP runtime dependencies (`mcp`, `cffi`) into base `dependencies`, so users can run MCP without `cwprep[mcp]`.
+- **Optional Extras Cleanup**: Removed the compatibility-only empty `mcp` extra from `pyproject.toml`.
+- **Docs and Metadata**: Updated README MCP install/config examples and inline package usage notes to use `cwprep` directly.
 
 ---
 
@@ -311,4 +320,3 @@ SDK v0.5.5 - Added copyright headers and author metadata across all source files
 - Implemented the `TFLPackager` class, standardizing the packaging and unpackaging process for .tfl files.
 - Resolved deep compatibility issues with `displaySettings` and `maestroMetadata`, ensuring generated flows can be correctly read by the software.
 - Established the `tfl-generator` skill according to Gemini CLI specifications, achieving a fully automated path from business description to .tfl file.
-

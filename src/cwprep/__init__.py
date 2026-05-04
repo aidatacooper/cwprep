@@ -29,7 +29,7 @@ from .config import (
     DEFAULT_CONFIG
 )
 
-__version__ = "0.5.5"
+__version__ = "0.5.6"
 __author__ = "Cooper Wenhua"
 __email__ = "imgwho@gmail.com"
 __copyright__ = "Copyright (C) 2025 Cooper Wenhua <imgwho@gmail.com>"
@@ -47,5 +47,5 @@ __all__ = [
     "__version__"
 ]
 
-# MCP Server is available via `cwprep.mcp_server` (requires `pip install cwprep[mcp]`)
+# MCP Server is available via `cwprep.mcp_server` (install with `pip install cwprep`)
 # Usage: cwprep-mcp  or  python -m cwprep.mcp_server

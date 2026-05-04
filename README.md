@@ -99,8 +99,8 @@ cwprep includes a built-in [Model Context Protocol](https://modelcontextprotocol
 
 | Method | Requirement |
 |--------|-------------|
-| `uvx` (recommended) | Install [uv](https://docs.astral.sh/uv/getting-started/installation/) — it auto-downloads `cwprep[mcp]` in an isolated env |
-| `pip install` | Python ≥ 3.8 + `pip install cwprep[mcp]` |
+| `uvx` (recommended) | Install [uv](https://docs.astral.sh/uv/getting-started/installation/) — it auto-downloads `cwprep` in an isolated env |
+| `pip install` | Python ≥ 3.8 + `pip install cwprep` |
 
 ### Quick Start
 
@@ -134,7 +134,7 @@ Edit config file:
   "mcpServers": {
     "cwprep": {
       "command": "uvx",
-      "args": ["--from", "cwprep[mcp]", "cwprep-mcp"]
+      "args": ["--from", "cwprep", "cwprep-mcp"]
     }
   }
 }
@@ -151,7 +151,7 @@ Settings → MCP → Add new MCP server, or edit `~/.cursor/mcp.json`:
   "mcpServers": {
     "cwprep": {
       "command": "uvx",
-      "args": ["--from", "cwprep[mcp]", "cwprep-mcp"]
+      "args": ["--from", "cwprep", "cwprep-mcp"]
     }
   }
 }
@@ -168,7 +168,7 @@ Create `.vscode/mcp.json` in project root:
   "servers": {
     "cwprep": {
       "command": "uvx",
-      "args": ["--from", "cwprep[mcp]", "cwprep-mcp"]
+      "args": ["--from", "cwprep", "cwprep-mcp"]
     }
   }
 }
@@ -185,7 +185,7 @@ Edit `~/.codeium/windsurf/mcp_config.json`:
   "mcpServers": {
     "cwprep": {
       "command": "uvx",
-      "args": ["--from", "cwprep[mcp]", "cwprep-mcp"]
+      "args": ["--from", "cwprep", "cwprep-mcp"]
     }
   }
 }
@@ -196,7 +196,7 @@ Edit `~/.codeium/windsurf/mcp_config.json`:
 <summary><b>Claude Code (CLI)</b></summary>
 
 ```bash
-claude mcp add cwprep -- uvx --from "cwprep[mcp]" cwprep-mcp
+claude mcp add cwprep -- uvx --from "cwprep" cwprep-mcp
 ```
 </details>
 
@@ -210,7 +210,7 @@ Edit `~/.gemini/settings.json`:
   "mcpServers": {
     "cwprep": {
       "command": "uvx",
-      "args": ["--from", "cwprep[mcp]", "cwprep-mcp"]
+      "args": ["--from", "cwprep", "cwprep-mcp"]
     }
   }
 }
@@ -228,7 +228,7 @@ mcpServers:
     command: uvx
     args:
       - --from
-      - cwprep[mcp]
+      - cwprep
       - cwprep-mcp
 ```
 </details>
