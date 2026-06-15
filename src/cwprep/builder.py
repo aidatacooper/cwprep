@@ -1582,6 +1582,125 @@ class TFLBuilder:
         
         return layout
 
+    def validate(self) -> List[str]:
+        """
+        Validate the current flow definition.
+
+        Returns:
+            List of error messages. Empty list means valid.
+        """
+        errors: List[str] = []
+
+        if not self.flow_name or not str(self.flow_name).strip():
+            errors.append("flow_name is required.")
+
+        if not self.nodes:
+            errors.append("Flow has no nodes.")
+            return errors
+
+        known_ids = set(self.nodes.keys())
+        has_output = False
+        has_input = False
+        has_database_source = False
+
+        known_node_types = {
+            ".v1.LoadSql",
+            ".v1.LoadCsv",
+            ".v1.LoadExcel",
+            ".v1.LoadCsvInputUnion",
+            ".v2018_2_3.SuperJoin",
+            ".v1.SimpleJoin",
+            ".v2018_2_3.SuperUnion",
+            ".v1.SimpleUnion",
+            ".v2018_3_3.SuperPivot",
+            ".v2018_3_3.Pivot",
+            ".v2018_2_3.SuperUnpivot",
+            ".v1.Unpivot",
+            ".v1.Container",
+            ".v1.FilterOperation",
+            ".v1.AddColumn",
+            ".v2024_2_0.QuickCalcColumn",
+            ".v2018_2_3.SuperAggregate",
+            ".v1.Aggregate",
+            ".v2019_2_2.KeepOnlyColumns",
+            ".v1.RemoveColumns",
+            ".v1.RenameColumn",
+            ".v1.ChangeColumnType",
+            ".v2019_2_3.DuplicateColumn",
+            ".v1.PublishExtract",
+        }
+
+        for node_id, node in self.nodes.items():
+            name = node.get("name", "")
+            if not name or not str(name).strip():
+                errors.append(f"Node '{node_id}': 'name' is required.")
+                continue
+
+            node_type = node.get("nodeType", "")
+            if not node_type:
+                errors.append(f"Node '{name}': 'nodeType' is required.")
+                continue
+
+            if node_type not in known_node_types:
+                errors.append(f"Node '{name}': unknown nodeType '{node_type}'.")
+
+            base_type = node.get("baseType", "")
+            if base_type == "input":
+                has_input = True
+                conn_id = node.get("connectionId")
+                if conn_id and conn_id not in self.connections:
+                    errors.append(
+                        f"Node '{name}': connectionId '{conn_id}' not found."
+                    )
+                if node_type == ".v1.LoadSql":
+                    relation = node.get("relation", {})
+                    if relation.get("query") or relation.get("table"):
+                        has_database_source = True
+            elif base_type == "output":
+                has_output = True
+
+            for next_ref in node.get("nextNodes", []):
+                next_id = next_ref.get("nextNodeId")
+                if next_id and next_id not in known_ids:
+                    errors.append(
+                        f"Node '{name}': references unknown nextNode '{next_id}'."
+                    )
+
+            if node_type == ".v1.LoadSql":
+                relation = node.get("relation", {})
+                if not relation.get("query") and not relation.get("table"):
+                    errors.append(
+                        f"Node '{name}' (LoadSql): requires 'relation.query' or 'relation.table'."
+                    )
+            elif node_type in (".v1.LoadCsv", ".v1.LoadExcel"):
+                if not node.get("connectionId"):
+                    errors.append(
+                        f"Node '{name}' ({node_type}): requires 'connectionId'."
+                    )
+            elif node_type == ".v2018_2_3.SuperAggregate":
+                action = node.get("actionNode", {})
+                if not action.get("groupByFields"):
+                    errors.append(
+                        f"Node '{name}' (SuperAggregate): requires 'groupByFields'."
+                    )
+            elif node_type == ".v1.PublishExtract":
+                if not node.get("datasourceName"):
+                    errors.append(
+                        f"Node '{name}' (PublishExtract): requires 'datasourceName'."
+                    )
+            elif node_type == ".v1.Join":
+                if not node.get("joinConditions"):
+                    errors.append(
+                        f"Node '{name}' (Join): requires 'joinConditions'."
+                    )
+
+        if not has_input:
+            errors.append("Flow must contain at least one input node.")
+        if not has_output:
+            errors.append("Flow must contain at least one output node.")
+
+        return errors
+
     def build(self, is_packaged: bool = False) -> tuple:
         """
         Build final TFL file components
@@ -1592,7 +1711,14 @@ class TFLBuilder:
         
         Returns:
             tuple: (flow, displaySettings, maestroMetadata) three JSON objects
+        
+        Raises:
+            ValueError: If the flow fails validation (e.g. missing output node).
         """
+        validation_errors = self.validate()
+        if validation_errors:
+            raise ValueError("Flow validation failed:\n" + "\n".join(validation_errors))
+
         # When building for tflx, mark all file connections as packaged
         if is_packaged:
             for conn in self.connections.values():

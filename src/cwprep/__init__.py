@@ -29,7 +29,7 @@ from .config import (
     DEFAULT_CONFIG
 )
 
-__version__ = "0.5.6"
+__version__ = "0.5.7"
 __author__ = "Cooper Wenhua"
 __email__ = "imgwho@gmail.com"
 __copyright__ = "Copyright (C) 2025 Cooper Wenhua <imgwho@gmail.com>"

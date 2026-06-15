@@ -266,8 +266,8 @@ def _validate_flow_definition_data(
             "Database flows must include at least one valid input_sql.sql or input_table.table source."
         )
 
-    if not has_output and not errors:
-        errors.append("Warning: No output_server node found. The flow will have no output.")
+    if not has_output:
+        errors.append("Flow must contain at least one output_server node.")
 
     return {"valid": len(errors) == 0, "errors": errors}
 

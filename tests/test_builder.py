@@ -322,7 +322,7 @@ def test_build_output():
 def test_version():
     """测试版本号"""
     from cwprep import __version__
-    assert __version__ == "0.5.4"
+    assert __version__ == "0.5.7"
 
 
 def test_default_prep_version():
