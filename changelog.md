@@ -1,7 +1,14 @@
 # Project Changelog
 
 ### Current Status
-SDK v0.5.6 - MCP dependencies are now installed by default via `pip install cwprep`.
+SDK v0.5.8 - Removed unnecessary `cffi` dependency.
+
+---
+
+## v0.5.8 (2026-06-26)
+
+### Fixed
+- **Removed `cffi` dependency**: `cffi` was listed in `pyproject.toml` but never imported by cwprep. It was a leftover from an old `tableauhyperapi` compatibility workaround. Removing it fixes install failures on machines without a C compiler (e.g. MSVC), where `cffi` would fail to build from source.
 
 ---
 
