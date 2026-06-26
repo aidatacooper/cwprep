@@ -9,9 +9,20 @@ data flow files (.tfl) via standardized tool calls.
 
 Usage:
     # stdio (local)
+    cwprep
     cwprep-mcp
 
-    # streamable-http (remote)
+    # stdio (local, module form)
+    python -m cwprep.mcp_server
+
+    # stdio (explicit uvx form)
+    uvx --from cwprep cwprep-mcp
+
+    # stdio (short uvx form)
+    uvx cwprep
+
+    # remote (streamable-http)
+    cwprep-mcp
     cwprep-mcp --transport streamable-http
 """
 
@@ -921,7 +932,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        prog="cwprep-mcp",
+        prog="cwprep",
         description="cwprep MCP Server — Tableau Prep Flow SDK over Model Context Protocol",
     )
     parser.add_argument(

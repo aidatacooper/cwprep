@@ -1,7 +1,18 @@
 # Project Changelog
 
 ### Current Status
-SDK v0.5.8 - Removed unnecessary `cffi` dependency.
+SDK v0.5.9 - Unified MCP entrypoints while keeping short launch commands.
+
+---
+
+## v0.5.9 (2026-06-26)
+
+### Added
+- **Short MCP command alias**: added the `cwprep` console script alongside `cwprep-mcp`, so both `uvx cwprep` and local `cwprep` launches work out of the box.
+
+### Changed
+- **Unified MCP launch guidance**: standardized docs and config examples around the short form `uvx cwprep` while keeping `cwprep-mcp`, `uvx --from cwprep cwprep-mcp`, and `python -m cwprep.mcp_server` supported.
+- **Single MCP entrypoint convention**: MCP startup guidance now consistently points to `cwprep.mcp_server` as the canonical module entrypoint.
 
 ---
 

@@ -51,6 +51,7 @@ dev = [
 ]
 
 [project.scripts]
+cwprep = "cwprep.mcp_server:main"
 cwprep-mcp = "cwprep.mcp_server:main"
 
 [project.urls]

@@ -2,7 +2,7 @@
   "mcpServers": {
     "cwprep": {
       "command": "uvx",
-      "args": ["--from", "cwprep[mcp]", "cwprep-mcp"]
+      "args": ["cwprep"]
     }
   }
 }
