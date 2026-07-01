@@ -1,139 +1,52 @@
-# cwprep - Text-to-PrepFlow Engine
+# cwprep
 
-**cwprep** is a Python-based engine that enables **Text-to-PrepFlow** generation. 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/imgwho/cwprep/main/docs/assets/readme/logo.png" alt="Datacooper logo" width="220" />
+</p>
 
-By reverse-engineering the `.tfl` JSON structure and providing a built-in MCP (Model Context Protocol) server, cwprep acts as a bridge between LLMs (like Claude, Gemini) and Tableau Prep. You can now generate, modify, and build data cleaning flows simply through natural language conversations or Python scripts, without ever opening the GUI!
+> Tableau Prep flow engineering for reproducible `.tfl` / `.tflx` generation, validation, and SQL translation.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/imgwho/cwprep/main/docs/assets/readme/hero.png" alt="cwprep hero image" width="1200" />
+</p>
+
+**cwprep** is a Python toolkit and Model Context Protocol (MCP) server for building Tableau Prep flows from code or agent tool calls.
+
+It is meant to be a **PrepFlow engineering layer**, not a generic conversational analytics agent. The focus is reproducibility, inspectability, and safe automation in local workflows, scripts, and AI clients.
+
+The `cw` in `cwprep` comes from `Cooper Wenhua`.
 
 **Author:** Cooper Wenhua &lt;imgwho@gmail.com&gt;
 
+[Website](https://datacooper.com) · [Source](https://github.com/imgwho/cwprep) · [Changelog](https://github.com/imgwho/cwprep/blob/main/changelog.md)
 
-## Installation
+[![PyPI Downloads](https://static.pepy.tech/personalized-badge/cwprep?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads)](https://pepy.tech/projects/cwprep)
+[![Website](https://img.shields.io/badge/Website-datacooper.com-0A7CFF?style=flat-square)](https://datacooper.com)
+[![Source](https://img.shields.io/badge/Source-GitHub-181717?style=flat-square)](https://github.com/imgwho/cwprep)
+[![License](https://img.shields.io/badge/License-AGPL--3.0-green?style=flat-square)](https://github.com/imgwho/cwprep/blob/main/LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=flat-square)](https://www.python.org/)
+
+[![Star History Chart](https://api.star-history.com/svg?repos=imgwho/cwprep&type=Date)](https://star-history.com/#imgwho/cwprep&Date)
+
+[Try the example workflow](examples/demo_mcp_flow.py) · [Read the guide](https://github.com/imgwho/cwprep/blob/main/docs/guide.md)
+
+## Quick Start
+
+### Install
 
 ```bash
 pip install cwprep
 ```
 
-## Quick Start
-
-```python
-from cwprep import TFLBuilder, TFLPackager
-
-# Create builder
-builder = TFLBuilder(flow_name="My Flow")
-
-# Add database connection
-conn_id = builder.add_connection(
-    host="localhost",
-    username="root",
-    dbname="mydb"
-)
-
-# Add input tables
-orders = builder.add_input_table("orders", "orders", conn_id)
-customers = builder.add_input_table("customers", "customers", conn_id)
-
-# Join tables
-joined = builder.add_join(
-    name="Orders + Customers",
-    left_id=orders,
-    right_id=customers,
-    left_col="customer_id",
-    right_col="customer_id",
-    join_type="left"
-)
-
-# Add output
-builder.add_output_server("Output", joined, "My_Datasource")
-
-# Build and save
-flow, display, meta = builder.build()
-TFLPackager.save_tfl("./my_flow.tfl", flow, display, meta)
-```
-
-By default, both the SDK and MCP output only the final `.tfl`/`.tflx` archive. Use `save_to_folder()` only when you explicitly want the exploded folder for inspection.
-
-## Features
-
-| Feature | Method | Description |
-|---------|--------|-------------|
-| Database Connection | `add_connection()` | Connect to MySQL/PostgreSQL/SQL Server |
-| File Connection | `add_file_connection()` | Connect to Excel (.xlsx/.xls) or CSV files |
-| SQL Input | `add_input_sql()` | Custom SQL query input |
-| Table Input | `add_input_table()` | Direct table connection |
-| Excel Input | `add_input_excel()` | Read from Excel worksheet |
-| CSV Input | `add_input_csv()` | Read from CSV file |
-| CSV Union | `add_input_csv_union()` | Merge multiple CSV files |
-| Join | `add_join()` | left/right/inner/full joins (single or multi-column) |
-| Union | `add_union()` | Merge multiple tables |
-| Filter | `add_filter()` | Expression-based filter |
-| Value Filter | `add_value_filter()` | Keep/exclude by values |
-| Keep Only | `add_keep_only()` | Select columns |
-| Remove Columns | `add_remove_columns()` | Drop columns |
-| Rename | `add_rename()` | Rename columns |
-| Calculation | `add_calculation()` | Tableau formula fields |
-| Quick Calc | `add_quick_calc()` | Quick clean (lowercase/uppercase/trim/remove) |
-| Change Type | `add_change_type()` | Change column data types |
-| Duplicate Column | `add_duplicate_column()` | Duplicate (copy) a column |
-| Aggregate | `add_aggregate()` | GROUP BY with SUM/AVG/COUNT |
-| Pivot | `add_pivot()` | Rows to columns |
-| Unpivot | `add_unpivot()` | Columns to rows |
-| Output | `add_output_server()` | Publish to Tableau Server |
-| TFLX Packaging | `build(is_packaged=True)` | Generate .tflx with embedded data files |
-| **SQL Translation** | `SQLTranslator` | Translate TFL flows to equivalent ANSI SQL |
-
-## Examples
-
-See the `examples/` directory for complete demos:
-- `demo_basic.py` - Input, Join, Output
-- `demo_cleaning.py` - Filter, Calculate, Rename
-- `demo_field_operations.py` - Quick Calc, Change Type, Duplicate Column
-- `demo_aggregation.py` - Union, Aggregate, Pivot
-- `demo_comprehensive.py` - All features combined
-- `prompts.md` - 8 ready-to-use MCP prompt templates for AI-driven flow generation
-
-## MCP Server
-
-cwprep includes a built-in [Model Context Protocol](https://modelcontextprotocol.io/) server, enabling AI clients (Claude Desktop, Cursor, Gemini CLI, etc.) to generate TFL files directly.
-
-### Prerequisites
-
-| Method | Requirement |
-|--------|-------------|
-| `uvx` (recommended) | Install [uv](https://docs.astral.sh/uv/getting-started/installation/) — it auto-downloads `cwprep` in an isolated env |
-| `pip install` | Python ≥ 3.8 + `pip install cwprep` |
-
-### Quick Start
+### Run As An MCP Server
 
 ```bash
-# Local (stdio, short form)
-cwprep
-
-# Local (stdio, explicit script)
-cwprep-mcp
-
-# Local (stdio, module form)
-python -m cwprep.mcp_server
-
-# Remote (Streamable HTTP)
-cwprep-mcp --transport streamable-http --port 8000
+uvx cwprep
 ```
 
-> [!TIP]
-> **Upgrading?** If you previously used `uvx` with an older version, clear the cache to pick up the latest release:
-> ```bash
-> uv cache clean cwprep
-> ```
+The short form above remains the simplest option and is the default config shown in this repository.
 
-### Client Configuration
-
-All clients below use the short **`uvx cwprep`** form. Equivalent explicit forms such as `uvx --from cwprep cwprep-mcp`, `cwprep-mcp`, and `python -m cwprep.mcp_server` remain supported.
-
-<details>
-<summary><b>Claude Desktop</b></summary>
-
-Edit config file:
-- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+Add the server to your MCP client with the same command. For example:
 
 ```json
 {
@@ -145,183 +58,199 @@ Edit config file:
   }
 }
 ```
-</details>
 
-<details>
-<summary><b>Cursor</b></summary>
-
-Settings → MCP → Add new MCP server, or edit `~/.cursor/mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "cwprep": {
-      "command": "uvx",
-      "args": ["cwprep"]
-    }
-  }
-}
-```
-</details>
-
-<details>
-<summary><b>VS Code (Copilot)</b></summary>
-
-Create `.vscode/mcp.json` in project root:
-
-```json
-{
-  "servers": {
-    "cwprep": {
-      "command": "uvx",
-      "args": ["cwprep"]
-    }
-  }
-}
-```
-</details>
-
-<details>
-<summary><b>Windsurf (Codeium)</b></summary>
-
-Edit `~/.codeium/windsurf/mcp_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "cwprep": {
-      "command": "uvx",
-      "args": ["cwprep"]
-    }
-  }
-}
-```
-</details>
-
-<details>
-<summary><b>Claude Code (CLI)</b></summary>
+For Claude Code:
 
 ```bash
 claude mcp add cwprep -- uvx cwprep
 ```
-</details>
 
-<details>
-<summary><b>Gemini CLI</b></summary>
+For VSCode, add `cwprep` to your workspace or user `mcp.json` and use `uvx cwprep` as the command.
 
-Edit `~/.gemini/settings.json`:
-
-```json
-{
-  "mcpServers": {
-    "cwprep": {
-      "command": "uvx",
-      "args": ["cwprep"]
-    }
-  }
-}
-```
-</details>
-
-<details>
-<summary><b>Continue (VS Code / JetBrains)</b></summary>
-
-Edit `~/.continue/config.yaml`:
-
-```yaml
-mcpServers:
-  - name: cwprep
-    command: uvx
-    args:
-      - cwprep
-```
-</details>
-
-<details>
-<summary><b>Remote HTTP Mode (any client)</b></summary>
-
-Start the server:
+If you prefer an explicit script name, these equivalent launch styles also work:
 
 ```bash
-cwprep-mcp --transport streamable-http --port 8000
+uvx --from cwprep cwprep-mcp
+cwprep-mcp
+python -m cwprep.mcp_server
 ```
 
-Then configure your client with the endpoint: `http://your-server-ip:8000/mcp`
-</details>
+For client-specific details and the full reference, see [https://github.com/imgwho/cwprep/blob/main/docs/guide.md](https://github.com/imgwho/cwprep/blob/main/docs/guide.md).
 
-### Available MCP Capabilities
+## Highlights
 
-| Type | Name | Description |
-|------|------|-------------|
-| 🔧 Tool | `generate_tfl` | Generate .tfl/.tflx file from flow definition |
-| 🔧 Tool | `translate_to_sql` | Translate flow definition or .tfl file to ANSI SQL |
-| 🔧 Tool | `list_supported_operations` | List all supported node types |
-| 🔧 Tool | `validate_flow_definition` | Validate flow definition before generating |
-| 📖 Resource | `cwprep://docs/api-reference` | SDK API reference |
-| 📖 Resource | `cwprep://docs/calculation-syntax` | Tableau Prep calculation syntax |
-| 📖 Resource | `cwprep://docs/best-practices` | Common pitfalls and flow design rules |
-| 💬 Prompt | `design_data_flow` | Interactive flow design assistant |
-| 💬 Prompt | `explain_tfl_structure` | TFL file structure explanation |
+| Area | What you get |
+|---|---|
+| Flow authoring | Generate Tableau Prep `.tfl` / `.tflx` flows from Python or declarative MCP definitions |
+| Data inputs | Connect to MySQL, PostgreSQL, SQL Server, Alibaba AnalyticDB for MySQL, CSV, Excel, custom SQL, and table inputs |
+| Prep operations | Build joins, unions, filters, value filters, keep/remove columns, renames, calculations, quick clean steps, type changes, aggregates, pivots, and unpivots |
+| Packaging | Save final `.tfl` archives or packaged `.tflx` files with embedded data files |
+| SQL translation | Translate generated or existing `.tfl` flows into readable ANSI SQL CTEs |
+| MCP support | Drive flow generation from Claude, Cursor, VSCode, Gemini CLI, Continue, or other MCP clients |
 
-## AI Skill Support
+## See It In Action
 
-This project includes a specialized AI Skill for assistants like Claude or Gemini to help you build flows.
-- **Location**: `.agents/skills/tfl-generator/`
-- **Features**: MCP server index with fallback SDK usage guide. Detailed API and syntax references are served via MCP Resources from `src/cwprep/references/`.
+This GIF shows the MCP tool flow that designs and generates a Tableau Prep flow.
 
-## Directory Structure
+<p align="center">
+  <img src="https://raw.githubusercontent.com/imgwho/cwprep/main/docs/assets/readme/cwprep_clip.gif" alt="cwprep demo GIF" width="1200" />
+</p>
 
-```
-cwprep/
-├── .agents/skills/      # AI Agent skills (MCP index)
-├── src/cwprep/          # SDK source code
-│   ├── builder.py       # TFLBuilder class
-│   ├── packager.py      # TFLPackager class
-│   ├── translator.py    # SQLTranslator class
-│   ├── expression_translator.py  # ExpressionTranslator class
-│   ├── config.py        # Configuration utilities
-│   ├── mcp_server.py    # MCP Server (Tools, Resources, Prompts)
-│   └── references/      # MCP Resource documents (.md)
-├── examples/            # Demo scripts
-├── docs/                # Documentation
-└── tests/               # Unit tests
-```
+## Architecture
 
-## Configuration
-
-Create `config.yaml` for default settings:
-
-```yaml
-# MySQL (default)
-database:
-  host: localhost
-  port: 3306
-  dbname: mydb
-  type: mysql
-
-# SQL Server (Windows Authentication)
-# database:
-#   host: localhost
-#   type: sqlserver
-#   authentication: sspi
-#   schema: dbo
-
-# PostgreSQL
-# database:
-#   host: localhost
-#   port: 5432
-#   dbname: mydb
-#   type: postgres
-
-tableau_server:
-  url: http://your-server
-  default_project: Default
+```text
+                            Interfaces
+  +---------------------------------------------------------------+
+  |  +--------------------------+  +---------------------------+  |
+  |  |        MCP Server        |  |      Python Library       |  |
+  |  |  generate_tfl            |  |  from cwprep import       |  |
+  |  |  validate_flow_definition|  |  TFLBuilder, TFLPackager |  |
+  |  |  translate_to_sql        |  |                           |  |
+  |  |                          |  |  builder.add_...()       |  |
+  |  |                          |  |  builder.build()         |  |
+  |  |  (Claude / Cursor /      |  |  TFLPackager.save_tfl()  |  |
+  |  |   VSCode / Gemini)       |  |                           |  |
+  |  +------------+-------------+  +-------------+-------------+  |
+  |               +-----------------------------+                 |
+  +---------------------------------------------|-----------------+
+                                                v
+  +---------------------------------------------------------------+
+  |                    Packaged References                        |
+  |    api_reference.md  calculation_syntax.md  best_practices.md |
+  |    served as cwprep://docs/... MCP resources                  |
+  +----------------------------+----------------------------------+
+                               v
+  +---------------------------------------------------------------+
+  |                         TFLBuilder                            |
+  |       connections  inputs  joins  unions  cleaning            |
+  |       calculations  aggregates  pivots  outputs               |
+  +-------------+-------------------+-----------------------------+
+                |                   |
+                v                   v
+  +--------------------------+  +-------------------------------+
+  |       TFLPackager        |  |        SQLTranslator          |
+  |  flow/display/meta JSON  |  |  .tfl or flow JSON -> SQL    |
+  |  archive/tflx packaging  |  |  CTEs + step comments        |
+  +------------+-------------+  +---------------+---------------+
+               |                                |
+               v                                v
+       output.tfl / output.tflx          translated.sql
+               |
+               v
+  +---------------------------------------------------------------+
+  |                      Tableau Prep Builder                     |
+  |          Open, inspect, run, publish, or continue editing      |
+  +---------------------------------------------------------------+
 ```
 
-## Changelog
+The reference layer is packaged with the library so agents and scripts can start from known-good API guidance, resolve Tableau Prep calculation syntax, and avoid common flow-design pitfalls without relying on a checked-out repository.
 
-See [changelog.md](changelog.md) for version history.
+## Agent Architecture
+
+cwprep is designed for tool-using agents, not just direct Python calls. The MCP server gives agents a compact flow-generation surface; resource documents give phase-specific Tableau Prep guidance before generation.
+
+```text
+Human or agent prompt
+        |
+        v
+MCP server instructions
+        |
+        v
+Resource documents
+api-reference -> calculation-syntax -> best-practices
+        |
+        v
+Flow tools
+validate_flow_definition -> generate_tfl / translate_to_sql
+        |
+        v
+.tfl / .tflx artifact + optional SQL representation
+```
+
+Prompts explain what to build. Resources explain how to build it correctly. Tools make the generated flow inspectable and repeatable.
+
+## Capability Boundary
+
+cwprep keeps its public surface intentionally small:
+
+| Level | Meaning |
+|---|---|
+| Core | Stable primitives for normal SDK docs, examples, and MCP workflows |
+| Advanced | Supported compositions such as packaged `.tflx`, file unions, multi-column joins, and SQL translation |
+| Inspectable | Exploded flow folders and internal JSON are available for debugging, but final archives are the default output |
+
+Use `list_supported_operations` when an agent needs to check whether a requested Prep operation belongs in the stable surface.
+
+## Design Decisions
+
+- The MCP workflow is definition-first: design the flow, validate the JSON contract, then generate the archive.
+- Resource documents are phase-specific operating guides, not generic prompt stuffing.
+- The SDK and MCP output only the final `.tfl` / `.tflx` archive by default. Use `save_to_folder()` only when you explicitly want the exploded folder for inspection.
+- Tableau Prep calculation syntax is not SQL syntax. Agents should read `cwprep://docs/calculation-syntax` before creating formulas.
+- SQL translation is a readability and migration aid, not a replacement for Tableau Prep execution.
+- File replacement is handled defensively: generation writes temporary artifacts first and backs up existing outputs before replacement.
+
+## Validation
+
+cwprep provides four levels of flow validation and review:
+
+| Level | Description | Requires |
+|---|---|---|
+| **1. Definition validation** | Validate the declarative MCP flow definition before generating files | None |
+| **2. Archive generation safety** | Write temporary artifacts, back up existing outputs, and emit final `.tfl` / `.tflx` archives | None |
+| **3. SQL translation review** | Translate supported flow logic into ANSI SQL CTEs for inspection and migration planning | None |
+| **4. Tableau Prep openability** | Open the generated archive in Tableau Prep Builder for final product verification | Tableau Prep Builder |
+
+```python
+from cwprep import TFLBuilder, TFLPackager
+
+builder = TFLBuilder(flow_name="Customer Orders")
+# ... add connections, inputs, transforms, and outputs ...
+flow, display, meta = builder.build()
+TFLPackager.save_tfl("./customer_orders.tfl", flow, display, meta)
+```
+
+```bash
+# MCP tools
+validate_flow_definition(flow_definition={...})
+generate_tfl(flow_definition={...}, output_path="customer_orders.tfl")
+translate_to_sql(tfl_path="customer_orders.tfl")
+```
+
+## FAQ
+
+### What is the difference between `.tfl` and `.tflx`?
+
+`.tfl` is the Tableau Prep flow archive. `.tflx` is the packaged version that can include local data files used by the flow.
+
+### Does cwprep open or run Tableau Prep Builder?
+
+No. cwprep generates files that Tableau Prep Builder can open. It does not automate the Tableau Prep desktop GUI.
+
+### Does `validate_flow_definition` save files?
+
+No. `validate_flow_definition` checks the requested flow definition before generation. `generate_tfl` is the MCP tool that writes the final `.tfl` or `.tflx` archive.
+
+### Can cwprep translate flows to SQL?
+
+Yes. `SQLTranslator` and the `translate_to_sql` MCP tool can translate supported `.tfl` flow logic into ANSI SQL-style CTEs.
+
+### When should I use `uvx cwprep` versus `python -m cwprep.mcp_server`?
+
+Use `uvx cwprep` for the normal MCP workflow. Use `python -m cwprep.mcp_server` for local testing without `uvx`.
+
+For backward compatibility, `uvx --from cwprep cwprep-mcp` and `cwprep-mcp` continue to work.
+
+### Where is the full guide?
+
+See [the online guide](https://github.com/imgwho/cwprep/blob/main/docs/guide.md).
+
+## Documentation
+
+- [Guide](https://github.com/imgwho/cwprep/blob/main/docs/guide.md)
+- [Examples](https://github.com/imgwho/cwprep/blob/main/examples/README.md)
+- [Changelog](https://github.com/imgwho/cwprep/blob/main/changelog.md)
 
 ## License
 
-AGPL-3.0 License
+AGPL-3.0
