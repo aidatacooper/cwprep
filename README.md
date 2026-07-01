@@ -250,7 +250,3 @@ See [the online guide](https://github.com/imgwho/cwprep/blob/main/docs/guide.md)
 - [Guide](https://github.com/imgwho/cwprep/blob/main/docs/guide.md)
 - [Examples](https://github.com/imgwho/cwprep/blob/main/examples/README.md)
 - [Changelog](https://github.com/imgwho/cwprep/blob/main/changelog.md)
-
-## License
-
-AGPL-3.0
