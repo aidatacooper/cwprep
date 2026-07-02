@@ -143,6 +143,46 @@ This GIF shows the MCP tool flow that designs and generates a Tableau Prep flow.
   +---------------------------------------------------------------+
 ```
 
+Mermaid view:
+
+```mermaid
+flowchart TD
+    subgraph Interfaces
+        MCP["MCP Server<br/>generate_tfl<br/>validate_flow_definition<br/>translate_to_sql"]
+        PY["Python Library<br/>TFLBuilder · TFLPackager<br/>SQLTranslator"]
+    end
+
+    subgraph References["Packaged References"]
+        REFS["api_reference.md<br/>calculation_syntax.md<br/>best_practices.md<br/>served as cwprep://docs/..."]
+    end
+
+    subgraph Engine["Flow Engine"]
+        BUILDER["TFLBuilder<br/>connections · inputs · joins · unions<br/>cleaning · calculations · pivots · outputs"]
+    end
+
+    subgraph Artifacts["Packaging & Translation"]
+        PACKAGER["TFLPackager<br/>flow/display/meta JSON<br/>archive/tflx packaging"]
+        SQL["SQLTranslator<br/>.tfl or flow JSON → SQL<br/>CTEs + step comments"]
+    end
+
+    subgraph Outputs
+        TFL["output.tfl / output.tflx"]
+        SQL_OUT["translated.sql"]
+        PREP["Tableau Prep Builder<br/>open · inspect · run · publish"]
+    end
+
+    MCP --> BUILDER
+    PY --> BUILDER
+    REFS --> MCP
+    REFS --> BUILDER
+    REFS --> SQL
+    BUILDER --> PACKAGER
+    BUILDER --> SQL
+    PACKAGER --> TFL
+    SQL --> SQL_OUT
+    TFL --> PREP
+```
+
 The reference layer is packaged with the library so agents and scripts can start from known-good API guidance, resolve Tableau Prep calculation syntax, and avoid common flow-design pitfalls without relying on a checked-out repository.
 
 ## Agent Architecture
