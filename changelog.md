@@ -1,7 +1,23 @@
 # Project Changelog
 
 ### Current Status
-SDK v0.5.9 - Unified MCP entrypoints while keeping short launch commands.
+SDK v0.6.0 - Smart CLI entrypoint with explicit MCP mode and spec-based commands.
+
+---
+
+## v0.6.0 (2026-07-07)
+
+### Added
+- **Smart `cwprep` CLI entrypoint**: running `cwprep` in an interactive terminal now prints help instead of silently starting stdio MCP, while MCP clients using piped stdio can still launch with `uvx cwprep`.
+- **Explicit MCP command**: added `cwprep mcp` for direct MCP server startup, keeping `cwprep-mcp` available for compatibility and troubleshooting.
+- **Human and CI CLI commands**: added `doctor`, `status`, `capabilities`, `validate`, `run`, `translate`, and `translate-tfl` commands with JSON output where useful.
+- **Declarative spec execution**: added JSON/YAML spec loading for validation, `.tfl`/`.tflx` generation, dry runs, overwrite protection, and SQL translation.
+- **Legacy import compatibility**: restored thin `core.*` wrappers for older private scripts and tests that predate the `cwprep` package namespace.
+- **Release helper**: added `scripts/publish_from_env.ps1` for token-safe build and PyPI upload from local `.env`.
+
+### Changed
+- **Package scripts**: `cwprep` now points to the smart CLI, while `cwprep-mcp` continues to point directly at the MCP server.
+- **Docs and examples**: added CLI usage guidance and a reusable `examples/basic_flow.yaml` spec.
 
 ---
 

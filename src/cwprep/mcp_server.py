@@ -927,12 +927,21 @@ def explain_tfl_structure() -> str:
 
 # ============================= Entry Point ==================================
 
-def main():
+def run_mcp_server(transport: str = "stdio", host: str = "0.0.0.0", port: int = 8000):
+    """Run the cwprep MCP server with the requested transport."""
+    if transport == "streamable-http":
+        mcp.settings.host = host
+        mcp.settings.port = port
+
+    mcp.run(transport=transport)
+
+
+def main(argv=None):
     """CLI entry point for the cwprep MCP server."""
     import argparse
 
     parser = argparse.ArgumentParser(
-        prog="cwprep",
+        prog="cwprep-mcp",
         description="cwprep MCP Server — Tableau Prep Flow SDK over Model Context Protocol",
     )
     parser.add_argument(
@@ -953,13 +962,8 @@ def main():
         help="Port to bind when using streamable-http (default: 8000)",
     )
 
-    args = parser.parse_args()
-
-    if args.transport == "streamable-http":
-        mcp.settings.host = args.host
-        mcp.settings.port = args.port
-
-    mcp.run(transport=args.transport)
+    args = parser.parse_args(argv)
+    run_mcp_server(transport=args.transport, host=args.host, port=args.port)
 
 
 if __name__ == "__main__":

@@ -44,7 +44,7 @@ pip install cwprep
 uvx cwprep
 ```
 
-The short form above remains the simplest option and is the default config shown in this repository.
+The short form above remains the simplest MCP client option and is the default config shown in this repository. When a human runs `cwprep` directly in an interactive terminal, it prints CLI help instead of starting stdio MCP.
 
 Add the server to your MCP client with the same command. For example:
 
@@ -70,12 +70,27 @@ For VSCode, add `cwprep` to your workspace or user `mcp.json` and use `uvx cwpre
 If you prefer an explicit script name, these equivalent launch styles also work:
 
 ```bash
+cwprep mcp
 uvx --from cwprep cwprep-mcp
 cwprep-mcp
 python -m cwprep.mcp_server
 ```
 
 For client-specific details and the full reference, see [https://github.com/imgwho/cwprep/blob/main/docs/guide.md](https://github.com/imgwho/cwprep/blob/main/docs/guide.md).
+
+### Use The CLI
+
+```bash
+cwprep --help
+cwprep doctor
+cwprep status
+cwprep capabilities
+cwprep validate examples/basic_flow.yaml
+cwprep run examples/basic_flow.yaml --out demo_output/cli_basic_flow.tfl
+cwprep translate examples/basic_flow.yaml --out demo_output/cli_basic_flow.sql
+```
+
+`cwprep run` uses the same declarative flow shape as the MCP tools, so specs can move between local terminals, CI jobs, and agents without translation.
 
 ## Highlights
 
@@ -86,6 +101,7 @@ For client-specific details and the full reference, see [https://github.com/imgw
 | Prep operations | Build joins, unions, filters, value filters, keep/remove columns, renames, calculations, quick clean steps, type changes, aggregates, pivots, and unpivots |
 | Packaging | Save final `.tfl` archives or packaged `.tflx` files with embedded data files |
 | SQL translation | Translate generated or existing `.tfl` flows into readable ANSI SQL CTEs |
+| CLI workflow | Validate specs, generate flows, inspect capabilities, and translate SQL from terminal or CI |
 | MCP support | Drive flow generation from Claude, Cursor, VSCode, Gemini CLI, Continue, or other MCP clients |
 
 ## See It In Action
@@ -277,7 +293,7 @@ Yes. `SQLTranslator` and the `translate_to_sql` MCP tool can translate supported
 
 ### When should I use `uvx cwprep` versus `python -m cwprep.mcp_server`?
 
-Use `uvx cwprep` for the normal MCP workflow. Use `python -m cwprep.mcp_server` for local testing without `uvx`.
+Use `uvx cwprep` for the normal MCP workflow. Use `cwprep mcp` or `python -m cwprep.mcp_server` for explicit local MCP testing without relying on smart entrypoint detection.
 
 For backward compatibility, `uvx --from cwprep cwprep-mcp` and `cwprep-mcp` continue to work.
 

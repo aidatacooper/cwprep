@@ -164,6 +164,50 @@ Tableau Prep calculation syntax is not SQL syntax. Common differences:
 
 When using MCP, read `cwprep://docs/calculation-syntax` before creating formulas.
 
+## CLI Reference
+
+The `cwprep` command is a smart entrypoint:
+
+```text
+interactive terminal -> print help
+piped MCP stdio      -> start MCP server
+```
+
+Use explicit commands when you want deterministic behavior:
+
+```bash
+cwprep mcp
+cwprep doctor
+cwprep status
+cwprep capabilities --json
+cwprep validate examples/basic_flow.yaml --json
+cwprep run examples/basic_flow.yaml --out demo_output/cli_basic_flow.tfl
+cwprep run examples/basic_flow.yaml --dry-run
+cwprep translate examples/basic_flow.yaml --out demo_output/cli_basic_flow.sql
+cwprep translate-tfl demo_output/cli_basic_flow.tfl --out demo_output/from_tfl.sql
+```
+
+`CWPREP_MODE=mcp` forces no-argument `cwprep` to start MCP. `CWPREP_MODE=cli` forces no-argument `cwprep` to print CLI help.
+
+Spec files use the same declarative shape as the MCP tools:
+
+```yaml
+flow_name: CLI Basic Flow
+connection:
+  host: localhost
+  username: root
+  dbname: test_db
+nodes:
+  - type: input_sql
+    name: Orders
+    sql: SELECT * FROM orders
+  - type: output_server
+    name: Output
+    parent: Orders
+    datasource_name: CLI_Basic_Output
+output_path: demo_output/cli_basic_flow.tfl
+```
+
 ## MCP Reference
 
 ### MCP Tools
@@ -198,7 +242,7 @@ read resources -> design -> validate_flow_definition -> generate_tfl
 
 ### Client Configuration
 
-All clients below use the short `uvx cwprep` form. Equivalent explicit forms such as `uvx --from cwprep cwprep-mcp`, `cwprep-mcp`, and `python -m cwprep.mcp_server` remain supported.
+All clients below use the short `uvx cwprep` form. Equivalent explicit forms such as `cwprep mcp`, `uvx --from cwprep cwprep-mcp`, `cwprep-mcp`, and `python -m cwprep.mcp_server` remain supported.
 
 #### Claude Desktop
 

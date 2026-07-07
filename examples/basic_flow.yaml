@@ -1,0 +1,14 @@
+flow_name: CLI Basic Flow
+connection:
+  host: localhost
+  username: root
+  dbname: test_db
+nodes:
+  - type: input_sql
+    name: Orders
+    sql: SELECT * FROM orders
+  - type: output_server
+    name: Output
+    parent: Orders
+    datasource_name: CLI_Basic_Output
+output_path: demo_output/cli_basic_flow.tfl

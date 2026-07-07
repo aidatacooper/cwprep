@@ -51,7 +51,7 @@ dev = [
 ]
 
 [project.scripts]
-cwprep = "cwprep.mcp_server:main"
+cwprep = "cwprep.cli:main"
 cwprep-mcp = "cwprep.mcp_server:main"
 
 [project.urls]
@@ -68,7 +68,7 @@ include = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/cwprep"]
+packages = ["src/cwprep", "src/core"]
 
 [tool.hatch.metadata]
 license-files = []
