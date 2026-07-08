@@ -4,7 +4,27 @@ This directory contains usage examples for the cwprep SDK, based on the **Sample
 
 ## Quick Start
 
-### 1. Initialize Example Database
+### 1. Start with the Orders-only Example
+
+This is the simplest path: load only the **Orders** sheet from `Sample - Superstore.xls`, then generate a single-table flow.
+
+```bash
+# Load only the Orders sheet into a local MySQL database
+python examples/demo_data/load_orders_only.py --db mysql
+
+# Generate a simple Orders-only .tfl flow
+python examples/demo_orders_only.py
+```
+
+The generated flow uses:
+
+```
+Orders → Filter sales > 500 → Keep review fields → Server Output
+```
+
+For AI prompt examples that only use the `orders` table, see [prompts.md](prompts.md#orders-only-quick-prompts).
+
+### 2. Initialize Full Example Database
 
 You can initialize the database using either the SQL script or the Python loader:
 
@@ -36,9 +56,12 @@ python examples/demo_data/load_superstore.py --db postgresql --host localhost --
 python examples/demo_data/load_superstore.py --db sqlserver --driver "ODBC+Driver+18+for+SQL+Server"
 ```
 
-### 2. Run Example Scripts
+### 3. Run Example Scripts
 
 ```bash
+# Simplest single-table demo (Orders only)
+python examples/demo_orders_only.py
+
 # Basic features (Input, Join, Output)
 python examples/demo_basic.py
 
@@ -58,7 +81,7 @@ python examples/demo_comprehensive.py
 python examples/demo_mcp_flow.py
 ```
 
-### 3. Verify Results
+### 4. Verify Results
 
 Open the generated `.tfl` or `.tflx` files in the `demo_output/` directory using Tableau Prep.
 The SDK demos now write the final archive directly and do not leave exploded flow folders behind by default.
@@ -66,6 +89,18 @@ The SDK demos now write the final archive directly and do not leave exploded flo
 ---
 
 ## Example Scripts
+
+### demo_orders_only.py - High-Value Orders Review
+**Business Requirement**: Demonstrate the simplest cwprep workflow using only the Superstore `orders` table
+
+**Data Flow**:
+```
+Orders → Filter sales > 500 → Keep review fields → Server Output
+```
+
+**Features Covered**: `add_connection`, `add_input_sql`, `add_filter`, `add_keep_only`, `add_output_server`
+
+---
 
 ### quick_start.py - Minimal Quick Start
 **Business Requirement**: Demonstrate the simplest cwprep workflow — connect, input, join, filter, output
@@ -153,6 +188,7 @@ Feb Orders ─┘
 
 | Script | Feature Count | Difficulty |
 |------|:---:|:---:|
+| `demo_orders_only.py` | 5 | ⭐ Simplest |
 | `quick_start.py` | 5 | ⭐ Quick Start |
 | `demo_basic.py` | 3 | ⭐ Beginner |
 | `demo_cleaning.py` | 6 | ⭐⭐ Basic |

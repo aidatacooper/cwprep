@@ -2,6 +2,62 @@
 
 Example prompts for generating Tableau Prep `.tfl` flows via AI clients (Claude, Gemini, Cursor, etc.) with the cwprep MCP server.
 
+## Orders-only Quick Prompts
+
+Use these prompts for the simplest Superstore demo. They only require the `orders` table loaded from the `Orders` sheet in `Sample - Superstore.xls`.
+
+### Configuration Header
+
+Include the following at the beginning of each Orders-only prompt:
+
+> "Please read `examples/demo_data/db_orders_only.md` to get the table schema and strictly follow the field name casing. Use `cwprep` to generate a `.tfl` flow: connect to the local localhost MySQL database `superstore`, username `root`, password empty. Only use the `orders` table. Do not join other tables. Please assign a concise, descriptive name to the output node and output file based on the business logic. The specific business requirement is as follows:"
+
+### A. High-Value Orders Review ⭐
+
+**Business Context**:
+The operations team wants a quick review list of large orders without needing any joins or extra reference tables.
+
+**Full Prompt**:
+> "Please read `examples/demo_data/db_orders_only.md`. Use `cwprep` to generate a .tfl: connect to the local localhost database `superstore` (user: root, pwd: empty). Only use the `orders` table. Do not join other tables. **Business context**: Review high-value orders. **Logic**: Filter records where sales > 500; keep order_id, order_date, customer_name, segment, region, category, product_name, sales, and profit; output to the server. Please auto-generate the output node name and save the file."
+
+**Capability Test Prompt (Minimalist)**:
+> "Please read `examples/demo_data/db_orders_only.md`. Use `cwprep` to connect to the local localhost database `superstore`. Only use the `orders` table. **Business goal**: Create a simple high-value orders review flow. Filter for large orders, keep the most useful review fields, generate an output node, and save the flow."
+
+### B. Loss-Making Orders Review ⭐
+
+**Business Context**:
+The finance team needs to inspect orders with negative profit from the single Orders table.
+
+**Full Prompt**:
+> "Please read `examples/demo_data/db_orders_only.md`. Use `cwprep` to generate a .tfl: connect to the local localhost database `superstore` (user: root, pwd: empty). Only use the `orders` table. Do not join other tables. **Business context**: Review loss-making orders. **Logic**: Filter records where profit < 0; keep order_id, order_date, customer_name, segment, region, category, product_name, sales, discount, and profit; output to the server. Please auto-generate the output node name and save the file."
+
+**Capability Test Prompt (Minimalist)**:
+> "Please read `examples/demo_data/db_orders_only.md`. Use `cwprep` to connect to the local localhost database `superstore`. Only use the `orders` table. **Business goal**: Find orders that are losing money and output the most useful fields for finance review. Infer the filter and field selection, generate an output node, and save the flow."
+
+### C. Slow Shipping Orders ⭐⭐
+
+**Business Context**:
+The logistics team wants to identify orders where shipping took unusually long.
+
+**Full Prompt**:
+> "Please read `examples/demo_data/db_orders_only.md`. Use `cwprep` to generate a .tfl: connect to the local localhost database `superstore` (user: root, pwd: empty). Only use the `orders` table. Do not join other tables. **Business context**: Identify slow shipping orders. **Logic**: Add a calculated field shipping_duration = DATEDIFF('day', [order_date], [ship_date]); filter records where shipping_duration > 5; keep order_id, order_date, ship_date, ship_mode, customer_name, region, shipping_duration, sales, and profit; output to the server. Please auto-generate the output node name and save the file."
+
+**Capability Test Prompt (Minimalist)**:
+> "Please read `examples/demo_data/db_orders_only.md`. Use `cwprep` to connect to the local localhost database `superstore`. Only use the `orders` table. **Business goal**: Find orders with slow shipping. Calculate shipping duration from the available date fields, filter for unusually slow shipments, generate an output node, and save the flow."
+
+### D. Regional Sales Summary ⭐⭐
+
+**Business Context**:
+Management needs a single-table regional summary without joining region manager data.
+
+**Full Prompt**:
+> "Please read `examples/demo_data/db_orders_only.md`. Use `cwprep` to generate a .tfl: connect to the local localhost database `superstore` (user: root, pwd: empty). Only use the `orders` table. Do not join other tables. **Business context**: Summarize sales performance by region. **Logic**: Aggregate by region and category; compute SUM(sales) as total_sales, SUM(profit) as total_profit, and COUNT(order_id) as order_count; output to the server. Please auto-generate the output node name and save the file."
+
+**Capability Test Prompt (Minimalist)**:
+> "Please read `examples/demo_data/db_orders_only.md`. Use `cwprep` to connect to the local localhost database `superstore`. Only use the `orders` table. **Business goal**: Build a regional sales summary from Orders only. Infer the aggregation fields and measures, generate an output node, and save the flow."
+
+---
+
 ## Configuration Header
 
 Include the following at the beginning of each prompt to ensure accurate database connections and field definitions:
