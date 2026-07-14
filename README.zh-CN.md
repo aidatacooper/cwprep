@@ -1,13 +1,13 @@
 # cwprep
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/imgwho/cwprep/main/docs/assets/readme/logo.png" alt="Datacooper logo" width="220" />
+  <img src="https://raw.githubusercontent.com/aidatacooper/cwprep/main/docs/assets/readme/logo.png" alt="Datacooper logo" width="220" />
 </p>
 
 > 面向可复现 `.tfl` / `.tflx` 生成、验证与 SQL 转译的 Tableau Prep Flow 工程层。
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/imgwho/cwprep/main/docs/assets/readme/hero.png" alt="cwprep hero image" width="1200" />
+  <img src="https://raw.githubusercontent.com/aidatacooper/cwprep/main/docs/assets/readme/hero.png" alt="cwprep hero image" width="1200" />
 </p>
 
 **cwprep** 是一个 Python 工具包和 Model Context Protocol（MCP）服务器，用来通过代码或 Agent 工具调用构建 Tableau Prep flows。
@@ -18,17 +18,17 @@
 
 **作者：** Cooper Wenhua &lt;imgwho@gmail.com&gt;
 
-[Website](https://datacooper.com) · [Source](https://github.com/imgwho/cwprep) · [Changelog](https://github.com/imgwho/cwprep/blob/main/changelog.md)
+[Website](https://datacooper.com) · [Source](https://github.com/aidatacooper/cwprep) · [Changelog](https://github.com/aidatacooper/cwprep/blob/main/changelog.md)
 
 [![PyPI Downloads](https://static.pepy.tech/personalized-badge/cwprep?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads)](https://pepy.tech/projects/cwprep)
 [![Website](https://img.shields.io/badge/Website-datacooper.com-0A7CFF?style=flat-square)](https://datacooper.com)
-[![Source](https://img.shields.io/badge/Source-GitHub-181717?style=flat-square)](https://github.com/imgwho/cwprep)
-[![License](https://img.shields.io/badge/License-AGPL--3.0-green?style=flat-square)](https://github.com/imgwho/cwprep/blob/main/LICENSE)
+[![Source](https://img.shields.io/badge/Source-GitHub-181717?style=flat-square)](https://github.com/aidatacooper/cwprep)
+[![License](https://img.shields.io/badge/License-AGPL--3.0-green?style=flat-square)](https://github.com/aidatacooper/cwprep/blob/main/LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=flat-square)](https://www.python.org/)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=imgwho/cwprep&type=Date)](https://star-history.com/#imgwho/cwprep&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=aidatacooper/cwprep&type=Date)](https://star-history.com/#aidatacooper/cwprep&Date)
 
-[试用示例工作流](examples/demo_mcp_flow.py) · [阅读中文指南](docs/guide.zh-CN.md) · [Read the guide](https://github.com/imgwho/cwprep/blob/main/docs/guide.md)
+[试用示例工作流](examples/demo_mcp_flow.py) · [阅读中文指南](docs/guide.zh-CN.md) · [Read the guide](https://github.com/aidatacooper/cwprep/blob/main/docs/guide.md)
 
 ## 快速开始
 
@@ -76,7 +76,7 @@ cwprep-mcp
 python -m cwprep.mcp_server
 ```
 
-完整客户端配置和参考见 [中文指南](docs/guide.zh-CN.md) 或 [英文指南](https://github.com/imgwho/cwprep/blob/main/docs/guide.md)。
+完整客户端配置和参考见 [中文指南](docs/guide.zh-CN.md) 或 [英文指南](https://github.com/aidatacooper/cwprep/blob/main/docs/guide.md)。
 
 ### 使用 CLI
 
@@ -109,7 +109,7 @@ cwprep translate examples/basic_flow.yaml --out demo_output/cli_basic_flow.sql
 这个 GIF 展示了 MCP 工具如何设计并生成 Tableau Prep flow。
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/imgwho/cwprep/main/docs/assets/readme/cwprep_clip.gif" alt="cwprep demo GIF" width="1200" />
+  <img src="https://raw.githubusercontent.com/aidatacooper/cwprep/main/docs/assets/readme/cwprep_clip.gif" alt="cwprep demo GIF" width="1200" />
 </p>
 
 ## 架构
@@ -299,14 +299,14 @@ translate_to_sql(tfl_path="customer_orders.tfl")
 
 ### 完整指南在哪里？
 
-见 [中文指南](docs/guide.zh-CN.md) 或 [英文在线指南](https://github.com/imgwho/cwprep/blob/main/docs/guide.md)。
+见 [中文指南](docs/guide.zh-CN.md) 或 [英文在线指南](https://github.com/aidatacooper/cwprep/blob/main/docs/guide.md)。
 
 ## 文档
 
 - [中文指南](docs/guide.zh-CN.md)
-- [英文 Guide](https://github.com/imgwho/cwprep/blob/main/docs/guide.md)
-- [Examples](https://github.com/imgwho/cwprep/blob/main/examples/README.md)
-- [Changelog](https://github.com/imgwho/cwprep/blob/main/changelog.md)
+- [英文 Guide](https://github.com/aidatacooper/cwprep/blob/main/docs/guide.md)
+- [Examples](https://github.com/aidatacooper/cwprep/blob/main/examples/README.md)
+- [Changelog](https://github.com/aidatacooper/cwprep/blob/main/changelog.md)
 
 ## License
 

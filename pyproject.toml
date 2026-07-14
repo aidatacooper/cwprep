@@ -55,10 +55,10 @@ cwprep = "cwprep.cli:main"
 cwprep-mcp = "cwprep.mcp_server:main"
 
 [project.urls]
-Homepage = "https://github.com/imgwho/cwprep"
-Documentation = "https://github.com/imgwho/cwprep#readme"
-Repository = "https://github.com/imgwho/cwprep.git"
-Issues = "https://github.com/imgwho/cwprep/issues"
+Homepage = "https://github.com/aidatacooper/cwprep"
+Documentation = "https://github.com/aidatacooper/cwprep#readme"
+Repository = "https://github.com/aidatacooper/cwprep.git"
+Issues = "https://github.com/aidatacooper/cwprep/issues"
 
 [tool.hatch.build.targets.sdist]
 include = [
